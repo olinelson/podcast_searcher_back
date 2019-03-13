@@ -1,3 +1,5 @@
+# export GOOGLE_APPLICATION_CREDENTIALS="'../google_credentials.json'"
+
 # Dummy Podcasts
 Podcast.delete_all
 Episode.delete_all
@@ -44,15 +46,28 @@ results = response.results
 # Get first result because we only processed a single audio file
 # Each result represents a consecutive portion of the audio
 results.first.alternatives.each do |alternatives|
-   puts "Transcription: #{alternatives.words}"
-  puts "Transcription: #{alternatives.transcript}"
+  # puts "Transcription: #{alternatives.words}"
+  # puts "Transcription: #{alternatives.transcript}"
   @episode = Episode.first
   @episode.transcript = "#{alternatives.transcript}"
-  @episode.words = "#{alternatives.words}"
+  wordsArray = []
+
+  alternatives.words.each do |word|
+    start_time = word.start_time.seconds + word.start_time.nanos/1000000000.0
+    end_time   = word.end_time.seconds + word.end_time.nanos/1000000000.0
+
+    new_word = { word:word.word, start_time: start_time, end_time: end_time}.to_json
+    puts new_word
+    wordsArray.push(new_word)
+
+  end
+
+  @episode.words = wordsArray
   @episode.save
+
  
 end
 
 
-puts Episode.first
+puts Episode.first.words
 
