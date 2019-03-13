@@ -39,7 +39,8 @@ ActiveRecord::Schema.define(version: 2019_03_12_191830) do
   create_table "episodes", force: :cascade do |t|
     t.string "name"
     t.string "length"
-    t.string "metadata"
+    t.string "transcript"
+    t.string "words"
     t.integer "podcast_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

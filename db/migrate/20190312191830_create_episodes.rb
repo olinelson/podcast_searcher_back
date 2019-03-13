@@ -3,7 +3,8 @@ class CreateEpisodes < ActiveRecord::Migration[5.2]
     create_table :episodes do |t|
       t.string :name
       t.string :length
-      t.string :metadata
+      t.string :transcript
+      t.string :words
       t.integer :podcast_id
 
       t.timestamps

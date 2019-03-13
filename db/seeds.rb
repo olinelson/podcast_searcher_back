@@ -1,3 +1,21 @@
+# Dummy Podcasts
+Podcast.delete_all
+Episode.delete_all
+
+
+Podcast.create(name: "new Podcast")
+Episode.create(name: "Olaf's episode", length: "long", podcast_id: Podcast.first.id)
+
+Episode.first.audio_file.attach(
+        io: File.open(Rails.root.join('resources', 'audio-file.flac')),
+        filename: 'audio-file.flac', content_type: 'audio/flac'
+      )
+
+
+
+
+
+
 # Imports the Google Cloud client library
 require "google/cloud/speech"
 
@@ -26,10 +44,15 @@ results = response.results
 # Get first result because we only processed a single audio file
 # Each result represents a consecutive portion of the audio
 results.first.alternatives.each do |alternatives|
+   puts "Transcription: #{alternatives.words}"
   puts "Transcription: #{alternatives.transcript}"
-  puts "Transcription: #{alternatives.words}"
+  @episode = Episode.first
+  @episode.transcript = "#{alternatives.transcript}"
+  @episode.words = "#{alternatives.words}"
+  @episode.save
+ 
 end
 
-# puts results
 
-# puts GOOGLE_APPLICATION_CREDENTIALS
+puts Episode.first
+
