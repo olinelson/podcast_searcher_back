@@ -1,4 +1,4 @@
-# export GOOGLE_APPLICATION_CREDENTIALS="'../google_credentials.json'"
+# export GOOGLE_APPLICATION_CREDENTIALS='google_credentials.json'
 
 # Dummy Podcasts
 Podcast.delete_all
@@ -29,23 +29,37 @@ file_name = "./resources/audio-file.flac"
 
 # The raw audio
 audio_file = File.binread file_name
+# ++++++++++++++++++++++++++++++++++++++++++++++
 
-# The audio file's encoding and sample rate
-config = { encoding:          :FLAC,
-           sample_rate_hertz: 44100,
-           language_code:     "en-US",
-            enable_word_time_offsets: true
-              }
+config     = { encoding:          :FLAC,
+               sample_rate_hertz: 44100,
+               language_code:     "en-US",
+              enable_word_time_offsets: true,
+              
+               }
 audio  = { content: audio_file }
 
-# Detects speech in the audio file
-response = speech.recognize config, audio
+operation = speech.long_running_recognize config, audio
 
-results = response.results
+puts "Operation started"
 
-# Get first result because we only processed a single audio file
-# Each result represents a consecutive portion of the audio
+operation.wait_until_done!
+
+raise operation.results.message if operation.error?
+
+results = operation.response.results
+
+# alternatives = results.first.alternatives
+
+
 results.first.alternatives.each do |alternatives|
+  # puts "Transcription: #{alternatives.words}"
+  # puts "Transcription: #{alternatives.transcript}"
+  @episode = Episode.first
+  @episode.transcript = "#{alternatives.transcript}"
+  wordsArray = []
+
+ results.first.alternatives.each do |alternatives|
   # puts "Transcription: #{alternatives.words}"
   # puts "Transcription: #{alternatives.transcript}"
   @episode = Episode.first
@@ -68,6 +82,12 @@ results.first.alternatives.each do |alternatives|
  
 end
 
+ 
+end
+
+
+
 
 puts Episode.first.words
+puts Episode.first.transcript
 
