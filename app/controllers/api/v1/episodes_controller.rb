@@ -13,9 +13,13 @@ class Api::V1::EpisodesController < ApplicationController
 
   def create
    
-    @episode = episode.create(episode_params)
+    @episode = Episode.new(episode_params)
+    @episode.audio_file.attach(params[:audio_file])
+  
+    @episode.save 
    
-end
+  end
+
     
 
 
@@ -40,6 +44,6 @@ end
   end
 
   def episode_params
-    params.permit(:name, :length, :audio_file)
+    params.permit(:name, :length, :podcast_id)
   end
 end
