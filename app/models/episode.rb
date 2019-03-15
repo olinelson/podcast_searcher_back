@@ -13,10 +13,13 @@ class Episode < ApplicationRecord
         end
     end
 
-#     def convert_mp3_to_flac(mp3_path)
-#   flac_path = mp3_path.gsub(".mp3", ".flac")
-#   system("ffmpeg -i #{mp3_path} #{flac_path}")
-# end 
+
+
+#     def convert_mp3_to_flac
+#         mp3_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
+#   flac_path = mp3_path.gsub(".m4a", ".flac")
+#   system("ffmpeg -i #{m4a_path} #{flac_path}")
+#   end 
 
 
    def speech audio_file_path: nil
