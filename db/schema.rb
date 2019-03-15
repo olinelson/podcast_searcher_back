@@ -36,18 +36,12 @@ ActiveRecord::Schema.define(version: 2019_03_12_191830) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "episodes", force: :cascade do |t|
+  create_table "clips", force: :cascade do |t|
     t.string "name"
     t.string "length"
     t.string "transcript"
     t.string "words"
     t.integer "podcast_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "podcasts", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

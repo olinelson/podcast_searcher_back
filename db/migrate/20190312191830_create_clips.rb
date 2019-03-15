@@ -1,6 +1,6 @@
-class CreateEpisodes < ActiveRecord::Migration[5.2]
+class CreateClips < ActiveRecord::Migration[5.2]
   def change
-    create_table :episodes do |t|
+    create_table :clips do |t|
       t.string :name
       t.string :length
       t.string :transcript

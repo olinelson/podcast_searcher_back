@@ -1,8 +1,8 @@
-class Episode < ApplicationRecord
+class Clip < ApplicationRecord
     require "google/cloud/speech"
 
     has_one_attached :audio_file
-    belongs_to :podcast
+    # belongs_to :podcast
 
     def audio_file_url
         if self.audio_file.attached?
@@ -13,25 +13,15 @@ class Episode < ApplicationRecord
         end
     end
 
-<<<<<<< HEAD
-
-
-#     def convert_mp3_to_flac
-#         mp3_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
-#   flac_path = mp3_path.gsub(".m4a", ".flac")
-#   system("ffmpeg -i #{m4a_path} #{flac_path}")
-#   end 
-=======
 #     def justPath 
 #          "#{ActiveStorage::Blob.service.path_for(self.audio_file.key)}/#{self.audio_file.filename.to_s}"
 #     end
->>>>>>> fileUploaderOnly
 
-    def convert_mp3_to_flac
-    mp3_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
-    flac_path = mp3_path.gsub(".mp3", ".flac")
-    system("ffmpeg -i #{mp3_path} #{flac_path}")
-    end 
+    # def convert_mp3_to_flac
+    # mp3_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
+    # flac_path = mp3_path.gsub(".mp3", ".flac")
+    # system("ffmpeg -i #{mp3_path} #{flac_path}")
+    # end 
 
 
    def process_audio audio_file_path: nil
