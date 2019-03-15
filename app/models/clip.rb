@@ -38,7 +38,9 @@ class Clip < ApplicationRecord
   config     = { encoding:          :FLAC,
                  sample_rate_hertz: 44100,
                  language_code:     "en-US",
-                enable_word_time_offsets: true,   }
+                enable_word_time_offsets: true, 
+                
+            }
   audio      = { content: audio_file }
 
   operation = speech.long_running_recognize config, audio

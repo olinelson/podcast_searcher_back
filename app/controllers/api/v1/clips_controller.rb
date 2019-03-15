@@ -12,11 +12,14 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def create
+    
    
     @clip = Clip.new(clip_params)
     @clip.audio_file.attach(params[:audio_file])
-  
-    @clip.save 
+    @clip.process_audio
+    @clip.save
+
+    
    
   end
 
@@ -44,6 +47,6 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def clip_params
-    params.permit(:name, :length,)
+    params.permit(:name,)
   end
 end
