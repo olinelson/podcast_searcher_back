@@ -1,8 +1,9 @@
 class Clip < ApplicationRecord
     require "google/cloud/speech"
+    require "google/cloud/storage"
 
     has_one_attached :audio_file
-    # belongs_to :podcast
+
 
     def audio_file_url
         if self.audio_file.attached?
@@ -13,15 +14,29 @@ class Clip < ApplicationRecord
         end
     end
 
-#     def justPath 
-#          "#{ActiveStorage::Blob.service.path_for(self.audio_file.key)}/#{self.audio_file.filename.to_s}"
-#     end
+    def audio_file_path
+        ActiveStorage::Blob.service.path_for(self.audio_file.key)
+    end
 
-    # def convert_mp3_to_flac
-    # mp3_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
-    # flac_path = mp3_path.gsub(".mp3", ".flac")
-    # system("ffmpeg -i #{mp3_path} #{flac_path}")
-    # end 
+    def upload_to_gcloud
+        
+        storage = Google::Cloud::Storage.new
+        bucket = storage.bucket "bucket-of-doom"
+        bucket.create_file audio_file_path
+        
+    end
+
+    def delete_local_file
+        self.audio_file.purge
+    end
+
+    def gcloud_audio_link
+        storage = Google::Cloud::Storage.new
+        bucket = storage.bucket "bucket-of-doom"
+        file = bucket.file audio_file_path
+        "https://storage.googleapis.com/bucket-of-doom/#{file.name}"
+    
+    end
 
 
    def process_audio audio_file_path: nil
