@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2019_03_12_191830) do
     t.string "length"
     t.string "transcript"
     t.string "words"
-    t.integer "podcast_id"
+    t.string "gcloud_service_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

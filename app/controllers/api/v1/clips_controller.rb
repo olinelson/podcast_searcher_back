@@ -15,12 +15,12 @@ class Api::V1::ClipsController < ApplicationController
     
    
     @clip = Clip.new(clip_params)
-    @clip.audio_file.attach(params[:audio_file])
+    # @clip.audio_file.attach(params[:audio_file])
    
-    @clip.upload_to_gcloud
+    # @clip.upload_to_gcloud
      # @clip.process_audio
     @clip.save
-    @clip.delete_local_file
+    # @clip.delete_local_file
 
    
     

@@ -5,7 +5,7 @@ class CreateClips < ActiveRecord::Migration[5.2]
       t.string :length
       t.string :transcript
       t.string :words
-      t.integer :podcast_id
+      t.string :gcloud_service_link
 
       t.timestamps
     end

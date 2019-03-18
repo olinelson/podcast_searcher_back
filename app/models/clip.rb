@@ -41,7 +41,7 @@ class Clip < ApplicationRecord
 
    def process_audio audio_file_path: nil
 # [START speech_transcribe_async]
-  audio_file_path = ActiveStorage::Blob.service.path_for(self.audio_file.key)
+  storage_path = self.gcloud_service_link
 
   require "google/cloud/speech"
 
@@ -49,14 +49,14 @@ class Clip < ApplicationRecord
 
   # [START speech_ruby_migration_async_response]
   # [START speech_ruby_migration_async_request]
-  audio_file = File.binread audio_file_path
+  
   config     = { encoding:          :FLAC,
                  sample_rate_hertz: 44100,
                  language_code:     "en-US",
                 enable_word_time_offsets: true, 
                 
             }
-  audio      = { content: audio_file }
+  audio      = { uri: storage_path }
 
   operation = speech.long_running_recognize config, audio
 
@@ -89,8 +89,36 @@ end
   
 
   
-  # [END speech_ruby_migration_async_response]
+#   [END speech_ruby_migration_async_response]
 # [END speech_transcribe_async]
 end
+
+# def process_audio 
+# storage_path = self.gcloud_service_link
+
+# require "google/cloud/speech"
+
+# speech = Google::Cloud::Speech.new
+
+# config     = { encoding:          :FLAC,
+#                sample_rate_hertz: 44100,
+#                language_code:     "en-US"   }
+# audio  = { uri: storage_path }
+
+# operation = speech.long_running_recognize config, audio
+
+# puts "Operation started"
+
+# operation.wait_until_done!
+
+# raise operation.results.message if operation.error?
+
+# results = operation.response.results
+
+# alternatives = results.first.alternatives
+# alternatives.each do |alternative|
+#   puts "Transcription: #{alternative.transcript}"
+# end  
+# end
 
 end #end of Episode Class
