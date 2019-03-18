@@ -93,3 +93,6 @@
 # puts Episode.first.transcript
 
 # storage experiment
+
+
+url_for(Clip.first.audio_file)

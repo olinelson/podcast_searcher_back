@@ -1,3 +1,3 @@
 class Api::V1::ClipSerializer < ActiveModel::Serializer
-  attributes :id, :name, :length, :transcript, :words, :audio_file_url
+  attributes :id, :name, :length, :transcript, :words, :gcloud_service_link, :gcloud_media_link
 end

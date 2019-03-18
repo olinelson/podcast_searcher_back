@@ -1,5 +1,7 @@
 class Api::V1::ClipsController < ApplicationController
     before_action :find_clip, only: [:update, :show, :destroy]
+
+
   def index
     @clips = Clip.all
     render json: @clips
@@ -7,7 +9,7 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def show
-    render json: @clip,  methods: :audio_file_url
+    render json: @clip #,  methods: :audio_file_url
    
   end
 
@@ -15,12 +17,11 @@ class Api::V1::ClipsController < ApplicationController
     
    
     @clip = Clip.new(clip_params)
-    # @clip.audio_file.attach(params[:audio_file])
-   
-    # @clip.upload_to_gcloud
-     # @clip.process_audio
+    @clip.audio_file.attach(params[:audio_file])
+    @clip.get_gcloud_links
+
     @clip.save
-    # @clip.delete_local_file
+        
 
    
     
