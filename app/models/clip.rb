@@ -28,7 +28,8 @@ class Clip < ApplicationRecord
   config     = { encoding:          :FLAC,
                  sample_rate_hertz: 44100,
                  language_code:     "en-US",
-                enable_word_time_offsets: true, 
+                enable_word_time_offsets: true
+
                 
             }
   audio      = { uri: storage_path }
@@ -42,21 +43,23 @@ class Clip < ApplicationRecord
   raise operation.results.message if operation.error?
 
   results = operation.response.results
-  # [END speech_ruby_migration_async_request]
+  
+  puts "defining results"
 alternatives = results.first.alternatives
-words = []
+wordsArray = []
+puts "iterating through results"
 results.each do |r|
     r.alternatives.each do |alternative|
-    self.transcript = self.transcript + alternative.transcript
-#  
+    self.transcript = "#{self.transcript} #{alternative.transcript}"
+
   alternative.words.each do |word|
    start_time = word.start_time.seconds + word.start_time.nanos/1000000000.0
     end_time   = word.end_time.seconds + word.end_time.nanos/1000000000.0
 
     new_word = { word:word.word, start_time: start_time, end_time: end_time}.to_json
-    words.push(new_word)
+    wordsArray.push(new_word)
   end
-  self.words = words
+  self.words = wordsArray
   self.save
 end
 end
