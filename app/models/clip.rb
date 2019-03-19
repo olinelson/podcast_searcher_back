@@ -63,10 +63,10 @@ results.each do |r|
     wordsArray.push(new_word)
   end
   self.words = wordsArray
-  self.save
+ 
 end
 end
-
+ self.save
 end #end
 
 
