@@ -3,6 +3,7 @@ class Clip < ApplicationRecord
     require "google/cloud/storage"
 
     has_one_attached :audio_file
+    
 
 
     def get_gcloud_links
