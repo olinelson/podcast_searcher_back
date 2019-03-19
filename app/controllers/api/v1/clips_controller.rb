@@ -45,6 +45,6 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def clip_params
-    params.permit(:name)
+    params.permit(:name, :tags)
   end
 end
