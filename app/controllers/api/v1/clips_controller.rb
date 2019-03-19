@@ -14,10 +14,14 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def create
+    
     @clip = Clip.new(clip_params)
     @clip.audio_file.attach(params[:audio_file])
-    @clip.get_gcloud_links
+
+  
+    
     @clip.save
+    @clip.get_gcloud_links
     @clip.process_audio
   end
 
@@ -45,6 +49,6 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def clip_params
-    params.permit(:name, :tags)
+    params.permit(:name, :tags, :audio_file, :length)
   end
 end
