@@ -151,10 +151,11 @@ uuid = url.split('/').last
 youtube = YoutubeDL.download url, output: "tmp/downloads/#{uuid}.mp4"
 self.name = youtube.information[:fulltitle]
 self.video_file.attach(io: File.open("tmp/downloads/#{uuid}.mp4"), filename: "#{url}.mp4")
+File.delete("tmp/downloads/#{uuid}.mp4") if File.exist?("tmp/downloads/#{uuid}.mp4")
 downloaded_image = open(youtube.information[:thumbnails].first[:url])
 self.image.attach(io: downloaded_image  , filename: "thumbnail.jpg")
 self.save
-File.delete("tmp/downloads/#{uuid}.mp4") if File.exist?("tmp/downloads/#{uuid}.mp4")
+
 
 end
 
