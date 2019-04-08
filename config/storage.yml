@@ -1,0 +1,16 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+google:
+  service: GCS
+  project: podcast searcher
+  credentials: <%= ENV['GOOGLE_APPLICATION_CREDENTIALS'] %>
+  bucket: bucket-of-doom
+google_dev:
+  service: GCS
+  project: podcast searcher
+  credentials: <%= Rails.root.join("config/secrets/podcastsearcher.json") %>
+  bucket: bucket-of-doom

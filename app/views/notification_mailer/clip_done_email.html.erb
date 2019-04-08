@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Hi <%= @user.user_name %>,</p>
+    <p>
+      Your clip has finished processing.
+    </p>
+    <a href="http://transcribeaudio.herokuapp.com/clips/<%=@clip.id%>">Check it out</a>
+  </body>
+</html>
