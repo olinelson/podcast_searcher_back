@@ -14,7 +14,8 @@ GOOGLE_APPLICATION_CREDENTIALS={your_google_appliction_json_goes_here}
 
 CLOUD_CONVERT_KEY=your_cloud_convertkey
 
-# Google Application Credentilas are repeated below, but seperated into individual variables. This is for use with the Cloud Convert Api.
+# Google Application Credentilas are repeated below, but seperated into individual variables.
+# This is for use with the Cloud Convert Api.
 
 
 TYPE=
