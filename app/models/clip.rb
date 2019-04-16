@@ -3,9 +3,6 @@ class Clip < ApplicationRecord
     require "google/cloud/storage"
     require 'youtube-dl.rb'
 
-
-  
-
     has_one_attached :audio_file
     has_one_attached :image
     has_one_attached :video_file
@@ -166,4 +163,4 @@ end
 
 end #end of Episode Class
 
-# comment again
+# comment agains
