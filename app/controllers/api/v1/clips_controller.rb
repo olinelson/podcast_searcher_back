@@ -78,6 +78,8 @@ class Api::V1::ClipsController < ApplicationController
 
   def audio_process 
     @clip = Clip.find(params[:clip_id])
+    @clip.processing = true
+    @clip.save
     @clip.create_flac_copy
     @clip.process_audio
   end

@@ -51,8 +51,6 @@ class Clip < ApplicationRecord
    def process_audio audio_file_path: nil
 
 # [START speech_transcribe_async]
-  self.processing = true
-  self.save
   storage_path = self.gcloud_service_link + "processed.flac"
 
   
