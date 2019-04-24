@@ -1,7 +1,7 @@
 class Clip < ApplicationRecord
     require "google/cloud/speech"
     require "google/cloud/storage"
-    require 'youtube-dl.rb'
+    # require 'youtube-dl.rb'
 
     has_one_attached :audio_file
     has_one_attached :image
@@ -14,7 +14,9 @@ class Clip < ApplicationRecord
 
 
     def send_clip_done_email
-    NotificationMailer.clip_done_email(self).deliver
+    # NotificationMailer.clip_done_email(self).deliver
+    # in order to work with delayed job had to change this to:
+    NotificationMailer.delay.clip_done_email(self)
     end
 
     def get_gcloud_links_for_audio_clip
@@ -159,8 +161,14 @@ end
  
 
 
+handle_asynchronously :send_clip_done_email 
+handle_asynchronously :delete_with_attachments 
+handle_asynchronously :process_audio 
+handle_asynchronously :create_flac_copy 
 
+# :delete_with_attachments 
+# :create_flac_copy, :process_audio
 
-end #end of Episode Class
+end #end of Clip Class
 
 # comment agains

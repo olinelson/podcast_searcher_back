@@ -62,5 +62,15 @@ gem 'rails-static-router'
 
 gem 'rest-client'
 
-gem 'youtube-dl.rb'
+# needs cocaine which is deprecated"
+# gem 'youtube-dl.rb'
+
+
+
+gem 'terrapin'
+
+gem 'delayed_job_active_record'
+
+gem 'daemons'
+
 

@@ -21,7 +21,8 @@ class Api::V1::ClipsController < ApplicationController
       self.upload_video_file
 
     else
-      self.upload_audio_file_from_url
+      # self.upload_audio_file_from_url
+      puts "error"
     end
   end
 
