@@ -56,23 +56,22 @@ class Api::V1::ClipsController < ApplicationController
     @clip.get_gcloud_links_for_video_clip
   end
 
-  def upload_audio_file_from_url
-    @user = curr_user
-    @clip = Clip.new
-    @clip.media_type = "video"
-    @clip.author_id = @user.id
-    @clip.audio_upload_format = "mp4"
+  # this is for using with youtube dl
+  # def upload_audio_file_from_url
+  #   @user = curr_user
+  #   @clip = Clip.new
+  #   @clip.media_type = "video"
+  #   @clip.author_id = @user.id
+  #   @clip.audio_upload_format = "mp4"
 
-    url = params[:video_url]
+  #   url = params[:video_url]
 
-    @clip.download_youtube_video(url)
-    @clip.get_gcloud_links_for_video_clip
-    @clip.processing = false
-    @clip.save
-     UserClip.create(clip_id: @clip.id, user_id: @user.id)
-   
-    
-  end
+  #   @clip.download_youtube_video(url)
+  #   @clip.get_gcloud_links_for_video_clip
+  #   @clip.processing = false
+  #   @clip.save
+  #    UserClip.create(clip_id: @clip.id, user_id: @user.id)
+  # end
 
  
 
