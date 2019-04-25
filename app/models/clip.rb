@@ -158,11 +158,11 @@ end
 
 def generate_video_thumbnail
   movie = FFMPEG::Movie.new(self.gcloud_media_link)
-  screenshot = movie.screenshot("tmp/screenshots/#{self.id}_screenshot.jpg")
-  self.image.attach(io: File.open("./tmp/screenshots/#{self.id}_screenshot.jpg"), filename: "#{self.id}_screenshot.jpg")
+  screenshot = movie.screenshot("#{self.id}_screenshot.jpg")
+  self.image.attach(io: File.open("#{self.id}_screenshot.jpg"), filename: "#{self.id}_screenshot.jpg")
   self.gcloud_image_link = "https://storage.googleapis.com/bucket-of-doom/#{self.image.key}"
   self.save
-  File.delete("./tmp/screenshots/#{self.id}_screenshot.jpg")
+  File.delete("#{self.id}_screenshot.jpg")
 end
 
 
