@@ -65,12 +65,13 @@ gem 'rest-client'
 # needs cocaine which is deprecated"
 # gem 'youtube-dl.rb'
 
-
-
 gem 'terrapin'
 
 gem 'delayed_job_active_record'
 
 gem 'daemons'
 
+gem 'image'
+
+gem 'streamio-ffmpeg'
 

@@ -21,8 +21,9 @@ class Api::V1::ClipsController < ApplicationController
       self.upload_video_file
 
     else
-      # self.upload_audio_file_from_url
+      # self.upload_youtube_video
       puts "error"
+
     end
   end
 
@@ -43,6 +44,7 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def upload_video_file
+
     puts "uploading video file"
     @user = curr_user
     @clip = Clip.new(clip_params)
@@ -50,15 +52,16 @@ class Api::V1::ClipsController < ApplicationController
     @clip.author_id = @user.id
     @clip.audio_upload_format = params[:video_file].original_filename.split('.').last
     @clip.video_file.attach(params[:video_file])
-    @clip.image.attach(params[:image])
     @clip.processing = false
     @clip.save
-     UserClip.create(clip_id: @clip.id, user_id: @user.id)
+    UserClip.create(clip_id: @clip.id, user_id: @user.id)
+    @clip.generate_video_thumbnail
     @clip.get_gcloud_links_for_video_clip
   end
 
   # this is for using with youtube dl
-  # def upload_audio_file_from_url
+  # def upload_youtube_video
+
   #   @user = curr_user
   #   @clip = Clip.new
   #   @clip.media_type = "video"
@@ -67,7 +70,10 @@ class Api::V1::ClipsController < ApplicationController
 
   #   url = params[:video_url]
 
+  #   @clip.save
+  #   byebug
   #   @clip.download_youtube_video(url)
+  #   byebug
   #   @clip.get_gcloud_links_for_video_clip
   #   @clip.processing = false
   #   @clip.save
