@@ -1,8 +1,6 @@
 class Api::V1::ClipsController < ApplicationController
     before_action :find_clip, only: [:update, :show, :destroy,]
 
-    
-
   def index
     @clips = Clip.all
     render json: @clips
