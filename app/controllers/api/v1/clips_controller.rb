@@ -26,13 +26,14 @@ class Api::V1::ClipsController < ApplicationController
   end
 
   def upload_audio_file
-    puts "uploading audio file"
+    puts "uploading audio file step 1"
 
     @user = curr_user
     @clip = Clip.new(clip_params)
     @clip.media_type = "audio"
     @clip.author_id = @user.id
     @clip.audio_upload_format = params[:audio_file].original_filename.split('.').last
+    puts "attaching audio file"
     @clip.audio_file.attach(params[:audio_file])
     @clip.image.attach(params[:image])
     @clip.processing = false

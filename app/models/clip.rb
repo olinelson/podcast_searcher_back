@@ -17,7 +17,8 @@ class Clip < ApplicationRecord
     def send_clip_done_email
     # NotificationMailer.clip_done_email(self).deliver
     # in order to work with delayed job had to change this to:
-    NotificationMailer.delay.clip_done_email(self)
+    # NotificationMailer.delay.clip_done_email(self)
+    puts "pretending to send email"
     end
 
     def get_gcloud_links_for_audio_clip
@@ -50,98 +51,14 @@ class Clip < ApplicationRecord
 
 
    def process_audio audio_file_path: nil
+    TranscriberWorker.perform_async(self.id)
+   end 
 
-# [START speech_transcribe_async]
-  storage_path = self.gcloud_service_link + "processed.flac"
 
-  
 
-  speech = Google::Cloud::Speech.new 
-
-  # [START speech_ruby_migration_async_response]
-  # [START speech_ruby_migration_async_request]
-  
-  config     = { encoding:          :FLAC,
-                 sample_rate_hertz: 44100,
-                 language_code:     "en-US",
-                enable_word_time_offsets: true
-
-                
-            }
-  audio      = { uri: storage_path }
-
-  operation = speech.long_running_recognize config, audio
-
-  puts "Operation started"
-
-  operation.wait_until_done!
-
-  raise operation.results.message if operation.error?
-
-  results = operation.response.results
-  
-  puts "defining results"
-alternatives = results.first.alternatives
-wordsArray = []
-puts "iterating through results"
-results.each do |r|
-    r.alternatives.each do |alternative|
-    self.transcript = "#{self.transcript} #{alternative.transcript}"
-
-  alternative.words.each do |word|
-   start_time = word.start_time.seconds + word.start_time.nanos/1000000000.0
-    end_time   = word.end_time.seconds + word.end_time.nanos/1000000000.0
-
-    new_word = { word:word.word, start_time: start_time, end_time: end_time}.to_json
-    wordsArray.push(new_word)
+  def create_flac_copy
+    ConverterWorker.perform_async(self.id)
   end
-  self.words = wordsArray
- 
-end
-end
-self.processing = false
- self.save
- self.send_clip_done_email
-end #end
-
-
-
-require 'rest-client'
-
-def create_flac_copy
-  inputFormat = self.audio_upload_format
-
-  originalFileName = self.gcloud_media_link.split('/').last
-  newFileName = originalFileName + "processed.flac"
-
-  url = 'https://api.cloudconvert.com/convert?apikey=' +
-           ENV["CLOUD_CONVERT_KEY"] +
-          '&inputformat=' + inputFormat + 
-          '&outputformat=flac&input[googlecloud][projectid]=' + ENV["PROJECT_ID"] + 
-          '&input[googlecloud][bucket]=bucket-of-doom&input[googlecloud][credentials][type]=service_account&input[googlecloud][credentials][project_id]=' + ENV["PROJECT_ID"] +
-          '&input[googlecloud][credentials][private_key_id]=' + ENV["PRIVATE_KEY_ID"] + 
-          '&input[googlecloud][credentials][private_key]=' + ENV["PRIVATE_KEY"] + 
-          '&input[googlecloud][credentials][client_email]=' + ENV["CLIENT_EMAIL"] + 
-          '&input[googlecloud][credentials][client_id]=' + ENV["CLIENT_ID"] + 
-          '&input[googlecloud][credentials][auth_uri]=' + ENV["AUTH_URI"] + 
-          '&input[googlecloud][credentials][token_uri]=' + ENV["TOKEN_URI"] + 
-          '&input[googlecloud][credentials][auth_provider_x509_cert_url]=' + ENV["AUTH_PROVIDER"] +
-          '&input[googlecloud][credentials][client_x509_cert_url]='+ ENV["CLIENT_CERT"] +
-          '&file=' + originalFileName + 
-          '&filename=' + originalFileName + "." + inputFormat +
-          '&converteroptions[audio_codec]=FLAC&converteroptions[audio_bitrate]=128&converteroptions[audio_channels]=1&converteroptions[audio_frequency]=44100&converteroptions[strip_metatags]=false&output[googlecloud][projectid]=' + ENV["PROJECT_ID"] + 
-          '&output[googlecloud][bucket]=bucket-of-doom&output[googlecloud][credentials][type]=service_account&output[googlecloud][credentials][project_id]=' + ENV["PROJECT_ID"] +
-          '&output[googlecloud][credentials][private_key_id]=' + ENV["PRIVATE_KEY_ID"] + 
-          '&output[googlecloud][credentials][private_key]=' + ENV["PRIVATE_KEY"] + 
-          '&output[googlecloud][credentials][client_email]=' + ENV["CLIENT_EMAIL"] + 
-          '&output[googlecloud][credentials][auth_uri]=' + ENV["AUTH_URI"] + 
-          '&output[googlecloud][credentials][token_uri]=' + ENV["TOKEN_URI"] + 
-          '&output[googlecloud][credentials][auth_provider_x509_cert_url]=' + ENV["AUTH_PROVIDER"] +
-          '&output[googlecloud][credentials][client_x509_cert_url]='+ ENV["CLIENT_CERT"] +
-          '&output[googlecloud][path]='+ newFileName + '&wait=true&download=false'
-  RestClient.get url
-  # puts url
-end
 
 # uses url as uuid for temp file
 # def download_youtube_video(url)
@@ -157,23 +74,18 @@ end
 # end
 
 def generate_video_thumbnail
-  movie = FFMPEG::Movie.new(self.gcloud_media_link)
-  screenshot = movie.screenshot("#{self.id}_screenshot.jpg")
-  self.image.attach(io: File.open("#{self.id}_screenshot.jpg"), filename: "#{self.id}_screenshot.jpg")
-  self.gcloud_image_link = "https://storage.googleapis.com/bucket-of-doom/#{self.image.key}"
-  self.save
-  File.delete("#{self.id}_screenshot.jpg")
+  VideoThumbnailWorker.perform_async(self.id)
 end
 
 
  
-
+# for use with delayed action
 # this seems like very dumb syntax but commas were not working??
-handle_asynchronously :send_clip_done_email 
-handle_asynchronously :delete_with_attachments 
-handle_asynchronously :process_audio 
-handle_asynchronously :create_flac_copy
-handle_asynchronously :generate_video_thumbnail
+# handle_asynchronously :send_clip_done_email 
+# handle_asynchronously :delete_with_attachments 
+# handle_asynchronously :process_audio 
+# handle_asynchronously :create_flac_copy
+# handle_asynchronously :generate_video_thumbnail
 
 
 # handle_asynchronously :download_youtube_video 
