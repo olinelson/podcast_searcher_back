@@ -4,12 +4,14 @@ class Api::V1::UsersController < ApplicationController
 
   def index
     @users = User.all
-    render json: @users
+    json_string = Api::V1::UserSerializer.new(@users).serialized_json
+    render json: json_string
 
   end
 
   def show
-    render json: @user #,  methods: :audio_file_url
+    json_string = Api::V1::UserSerializer.new(@user).serialized_json
+    render json: json_string
   end
 
    def create
@@ -17,7 +19,9 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
         jwt = encode_token(@user.id)
-        render json: @user
+        json_string = Api::V1::UserSerializer.new(@user).serialized_json
+        render json: json_string
+
     else
         render json: {errors: @user.errors} 
     end

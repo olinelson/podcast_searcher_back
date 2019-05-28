@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
       post "/audio_process", to: "clips#audio_process"
 
-      get "/google13206580d3cebc41.html", to: static("google13206580d3cebc41.html")
+
 
 
     end

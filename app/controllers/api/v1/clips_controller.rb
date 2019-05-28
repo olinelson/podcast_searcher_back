@@ -3,12 +3,14 @@ class Api::V1::ClipsController < ApplicationController
 
   def index
     @clips = Clip.all
-    render json: @clips
+    json_string = Api::V1::ClipSerializer.new(@clips).serialized_json
+    render json: json_string
 
   end
 
   def show
-    render json: @clip 
+    json_string = Api::V1::ClipSerializer.new(@clip).serialized_json
+    render json: json_string
   end
 
   def create
@@ -34,6 +36,9 @@ class Api::V1::ClipsController < ApplicationController
     @clip.author_id = @user.id
     @clip.audio_upload_format = params[:audio_file].original_filename.split('.').last
     puts "attaching audio file"
+    @clip.save
+
+    # AudioUploadWorker.perform_async(@clip.id, params)
     @clip.audio_file.attach(params[:audio_file])
     @clip.image.attach(params[:image])
     @clip.processing = false

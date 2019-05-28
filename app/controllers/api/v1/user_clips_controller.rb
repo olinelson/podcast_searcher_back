@@ -7,7 +7,8 @@ class Api::V1::UserClipsController < ApplicationController
 
     def index 
         @user_clips = UserClip.all 
-        render json: @user_clips
+        json_string = Api::V1::ClipSerializer.new(@user_clips).serialized_json
+        render json: json_string
     end
 
     def unsave

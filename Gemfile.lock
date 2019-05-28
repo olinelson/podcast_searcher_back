@@ -24,11 +24,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.9)
-      actionpack (>= 4.1, < 6)
-      activemodel (>= 4.1, < 6)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (5.2.2.1)
       activesupport (= 5.2.2.1)
       globalid (>= 0.3.6)
@@ -55,8 +50,6 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (11.0.1)
-    case_transform (0.2)
-      activesupport
     climate_control (0.2.0)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
@@ -74,6 +67,8 @@ GEM
     erubi (1.8.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     ffi (1.10.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -125,7 +120,6 @@ GEM
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     image (0)
-    jsonapi-renderer (0.2.0)
     jwt (2.1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -248,7 +242,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers
   activesupport
   bcrypt
   bootsnap
@@ -256,6 +249,7 @@ DEPENDENCIES
   byebug
   daemons
   dotenv-rails
+  fast_jsonapi
   google-cloud-speech
   google-cloud-storage
   image

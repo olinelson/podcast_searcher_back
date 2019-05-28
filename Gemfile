@@ -18,7 +18,7 @@ gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
-gem 'active_model_serializers'
+# gem 'active_model_serializers'
 
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
@@ -76,3 +76,5 @@ gem 'image'
 gem 'streamio-ffmpeg'
 
 gem 'sidekiq'
+
+gem 'fast_jsonapi'
