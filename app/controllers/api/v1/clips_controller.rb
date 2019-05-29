@@ -37,8 +37,6 @@ class Api::V1::ClipsController < ApplicationController
     @clip.audio_upload_format = params[:audio_file].original_filename.split('.').last
     puts "attaching audio file"
     @clip.save
-
-    # AudioUploadWorker.perform_async(@clip.id, params)
     @clip.audio_file.attach(params[:audio_file])
     @clip.image.attach(params[:image])
     @clip.processing = false
