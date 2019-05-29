@@ -78,3 +78,5 @@ gem 'streamio-ffmpeg'
 gem 'sidekiq'
 
 gem 'fast_jsonapi'
+
+gem 'thin'
