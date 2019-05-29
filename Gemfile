@@ -74,7 +74,7 @@ gem 'daemons'
 gem 'image'
 
 gem 'streamio-ffmpeg'
-
+# bundle exec sidekiq
 gem 'sidekiq'
 
 gem 'fast_jsonapi'

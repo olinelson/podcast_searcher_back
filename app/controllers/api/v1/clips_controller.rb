@@ -43,8 +43,8 @@ class Api::V1::ClipsController < ApplicationController
     @clip.image.attach(params[:image])
     @clip.processing = false
     @clip.save
-     UserClip.create(clip_id: @clip.id, user_id: @user.id)
     @clip.get_gcloud_links_for_audio_clip
+    UserClip.create(clip_id: @clip.id, user_id: @user.id)
   end
 
   def upload_video_file
