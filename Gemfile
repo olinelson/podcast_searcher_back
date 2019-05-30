@@ -80,3 +80,5 @@ gem 'sidekiq'
 gem 'fast_jsonapi'
 
 gem 'thin'
+
+gem 'scout_apm'
