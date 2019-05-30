@@ -21,7 +21,7 @@ gem 'bcrypt'
 # gem 'active_model_serializers'
 
 # Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
+# gem 'mini_magick', '~> 4.8'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -58,20 +58,20 @@ gem 'dotenv-rails'
 
 gem 'activesupport'
 
-gem 'rails-static-router'
+# gem 'rails-static-router'
 
 gem 'rest-client'
 
 # needs cocaine which is deprecated"
 # gem 'youtube-dl.rb'
 
-gem 'terrapin'
+# gem 'terrapin'
 
 # gem 'delayed_job_active_record'
 
-gem 'daemons'
+# gem 'daemons'
 
-gem 'image'
+# gem 'image'
 
 gem 'streamio-ffmpeg'
 # bundle exec sidekiq
