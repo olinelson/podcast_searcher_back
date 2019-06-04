@@ -18,7 +18,7 @@ class Clip < ApplicationRecord
     # NotificationMailer.clip_done_email(self).deliver
     # in order to work with delayed job had to change this to:
     # NotificationMailer.delay.clip_done_email(self)
-    puts "pretending to send email"
+    # puts "pretending to send email"
     end
 
     def get_gcloud_links_for_audio_clip
