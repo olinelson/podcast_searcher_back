@@ -24,7 +24,7 @@ class Clip < ApplicationRecord
     def get_gcloud_links_for_audio_clip
         self.gcloud_service_link = "gs://bucket-of-doom/#{self.audio_file.key}"
         self.gcloud_media_link = "https://storage.googleapis.com/bucket-of-doom/#{self.audio_file.key}"
-        self.gcloud_image_link = "https://storage.googleapis.com/bucket-of-doom/#{self.image.key}"
+        # self.gcloud_image_link = "https://storage.googleapis.com/bucket-of-doom/#{self.image.key}"
         self.save
     end
 

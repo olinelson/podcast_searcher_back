@@ -38,7 +38,7 @@ class Api::V1::ClipsController < ApplicationController
     puts "attaching audio file"
     @clip.save
     @clip.audio_file.attach(params[:audio_file])
-    @clip.image.attach(params[:image])
+    # @clip.image.attach(params[:image])
     @clip.processing = false
     @clip.save
     @clip.get_gcloud_links_for_audio_clip
